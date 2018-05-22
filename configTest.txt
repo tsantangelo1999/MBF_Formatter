@@ -1,0 +1,4 @@
+001-003	PIC X(3)	init
+004-008	PIC X(5)	test
+009-011	PIC X(3)	test2
+012-019	PIC X(8)	end
