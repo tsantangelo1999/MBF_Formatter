@@ -1,5 +1,23 @@
-001-003	PIC X(3)	init	0	HDR
-004-006	PIC X(3)	test	0	MBF
-007-012	PIC X(6)	test2	1	53    
-013-020	PIC X(8)	end
-021-028	PIC X(8)	end2
+001-003	PIC X(3)	Record Type	0	HDR
+004-006	PIC X(3)	File Title	0	MBF
+007-012	PIC X(6)	Merchant ISO Number	1	53    
+013-020	PIC X(8)	Processing Date
+021-028	PIC X(8)	File Creation Date
+029-034	PIC X(6)	File Creation Time
+035-038	PIC X(4)	Boarding ID
+039-048	PIC X(10)	Boarding Range Key	1	PAYFAC    
+049-058	PIC X(10)	Chain Key	1	CHAIN     
+059-068	PIC X(10)	Merchant ISC Number	1	VANTIV    
+069-078	PIC X(10)	Superchain Value	1
+079-600	PIC X(522)	Reserved spaces	0
+-
+001-003	PIC X(3)	Record Type	0	CHN
+004-045	PIC X(42)	Filler	0
+046-051	PIC X(6)	Vantiv Chain Number
+052-600	PIC X(549)	Filler	0
+-
+001-003	PIC X(3)	Record Type	0	DIV
+004-005	PIC X(2)	Status	1	10
+006-008	PIC X(3)	Division Number	1	   
+009-038	PIC X(30)	Division Name
+039-600	PIC X(562)	Reserved spaces	0

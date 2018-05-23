@@ -11,12 +11,14 @@ public class Segment
         AUTO, DEFAULT, FILL
     }
     public style type;
+    public boolean rightJust;
 
     public Segment(int s, int e, String d)
     {
         start = s;
         end = e;
         desc = d;
+        rightJust = false;
         type = style.FILL;
         value = null;
     }

@@ -24,6 +24,13 @@ public class Main
         while(sc.hasNextLine())
         {
             String[] line = sc.nextLine().split("\t");
+            if(line.length == 1 && line[0].equals("-"))
+            {
+                loc++;
+                format.add(new ArrayList<Segment>());
+                pass = 0;
+                continue;
+            }
             String pos;
             String form;
             String desc;
@@ -61,9 +68,9 @@ public class Main
             {
                 s = new Segment(start, end, desc);
             }
-            else if(line.length >= 5)
+            else
             {
-                int type;
+                int type = -1;
                 String val;
                 try
                 {
@@ -72,8 +79,12 @@ public class Main
                 }
                 catch(TypeMismatchException e)
                 {
-                    System.out.println("Type must be an integer from 0-2, error found on line " + (pass + 1) + ", section " + (loc + 1));
+                    System.out.println("Type must be an integer from 0-1, error found on line " + (pass + 1) + ", section " + (loc + 1));
                     return;
+                }
+                catch(IndexOutOfBoundsException e)
+                {
+                    val = "";
                 }
                 if(val.length() > (end - start + 1))
                 {
@@ -84,30 +95,31 @@ public class Main
                     System.out.println("Extraneous data found on line " + (pass + 1) + ", section " + (loc + 1) + ", continuing with extraneous data ignored");
                 s = new Segment(start, end, desc, type, val);
             }
-            else
-            {
-                System.out.println("Unexpected amount of data found on line " + (pass + 1) + ", section " + (loc + 1));
-                return;
-            }
             format.get(loc).add(s);
             pass++;
         }
         System.out.println(print(format));
         sc.close();
         Scanner sc2 = new Scanner(data);
-        ArrayList<String[]> dataParams = new ArrayList<>();
+        ArrayList<ArrayList<String[]>> dataParams = new ArrayList<>();
+        dataParams.add(new ArrayList<String[]>());
+        loc = 0;
         while(sc2.hasNextLine())
         {
-            dataParams.add(sc2.nextLine().split("\t"));
-        }
-        for(String[] a : dataParams)
-        {
-            System.out.println(a[0] + ", " + a[1]);
+            String[] line = sc2.nextLine().split("\t");
+            if(line.length == 1 && line[0].equals("-"))
+            {
+                loc++;
+                dataParams.add(new ArrayList<String[]>());
+                continue;
+            }
+            dataParams.get(loc).add(line);
         }
         sc2.close();
-        for(ArrayList<Segment> a : format)
+        for(int i = 0; i < format.size(); i++)
         {
-            for(Segment b : a)
+            ArrayList<String[]> dataHere = dataParams.get(i);
+            for(Segment b : format.get(i))
             {
                 int index;
                 switch(b.type)
@@ -115,54 +127,103 @@ public class Main
                     case FILL:
                         try
                         {
-                            index = find(b.desc, dataParams);
+                            index = find(b.desc, dataHere);
                         }
                         catch(Exception e)
                         {
                             System.out.println("Field not found in data: " + e.getMessage());
                             return;
                         }
-                        if(dataParams.get(index)[1].length() > b.length())
+                        if(dataParams.get(i).get(index)[1].length() > b.length())
                         {
                             System.out.println(
-                                "Data for " + dataParams.get(index)[0] + " is too long. Length " + dataParams
+                                "Data for " + dataParams.get(i).get(index)[0] + " is too long. Length " + dataHere
                                         .get(index)[1].length() + " > " + b.length());
                             return;
                         }
-                        pw.print(dataParams.get(index)[1]);
-                        for(int i = dataParams.get(index)[1].length(); i < b.length(); i++)
+                        if(b.rightJust)
                         {
-                            pw.print(" ");
+                            for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
+                            {
+                                pw.print(" ");
+                            }
+                        }
+                        pw.print(dataHere.get(index)[1]);
+                        if(b.rightJust)
+                        {
+                            for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
+                            {
+                                pw.print(" ");
+                            }
                         }
                         break;
                     case DEFAULT:
                         try
                         {
-                            index = find(b.desc, dataParams);
+                            index = find(b.desc, dataHere);
                         }
                         catch(Exception e)
                         {
+                            if(b.rightJust)
+                            {
+                                for(int j = b.value.length(); j < b.length(); j++)
+                                {
+                                    pw.print(" ");
+                                }
+                            }
                             pw.print(b.value);
+                            if(!b.rightJust)
+                            {
+                                for(int j = b.value.length(); j < b.length(); j++)
+                                {
+                                    pw.print(" ");
+                                }
+                            }
                             break;
                         }
-                        if(dataParams.get(index)[1].length() > b.length())
+                        if(dataHere.get(index)[1].length() > b.length())
                         {
                             System.out.println(
-                                    "Data for " + dataParams.get(index)[0] + " is too long. Length " + dataParams
+                                    "Data for " + dataHere.get(index)[0] + " is too long. Length " + dataHere
                                             .get(index)[1].length() + " > " + b.length());
                             return;
                         }
-                        pw.print(dataParams.get(index)[1]);
-                        for(int i = dataParams.get(index)[1].length(); i < b.length(); i++)
+                        if(b.rightJust)
                         {
-                            pw.print(" ");
+                            for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
+                            {
+                                pw.print(" ");
+                            }
+                        }
+                        pw.print(dataHere.get(index)[1]);
+                        if(!b.rightJust)
+                        {
+                            for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
+                            {
+                                pw.print(" ");
+                            }
                         }
                         break;
                     case AUTO:
+                        if(b.rightJust)
+                        {
+                            for(int j = b.value.length(); j < b.length(); j++)
+                            {
+                                pw.print(" ");
+                            }
+                        }
                         pw.print(b.value);
+                        if(!b.rightJust)
+                        {
+                            for(int j = b.value.length(); j < b.length(); j++)
+                            {
+                                pw.print(" ");
+                            }
+                        }
                         break;
                 }
             }
+            pw.println();
         }
         pw.close();
         fw.close();

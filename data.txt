@@ -1,3 +1,8 @@
-test2	45
-end2	20180523
-end	20180522
+Processing Date	20180522
+File Creation Date	20180523
+File Creation Time	115304
+Boarding ID	ACRO
+-
+Vantiv Chain Number	145826
+-
+Division Name	big division co
