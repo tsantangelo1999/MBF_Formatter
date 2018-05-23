@@ -1,5 +1,7 @@
 package com.company;
 
+import com.sun.corba.se.impl.io.TypeMismatchException;
+
 import java.io.*;
 import java.util.*;
 
@@ -13,10 +15,10 @@ public class Main
         FileWriter fw = new FileWriter("MBF.txt");
         PrintWriter pw = new PrintWriter(fw);
         Scanner sc = new Scanner(config);
-        ArrayList<ArrayList<Object[]>> format = new ArrayList<>();
+        ArrayList<ArrayList<Segment>> format = new ArrayList<>();
         //first arraylist defines each line, second arraylist contains parameters for the respective line
         //parameters currently are startIndex, endIndex, fieldDescription
-        format.add(new ArrayList<Object[]>());
+        format.add(new ArrayList<Segment>());
         int loc = 0;
         int pass = 0;
         while(sc.hasNextLine())
@@ -43,21 +45,51 @@ public class Main
             {
                 start = Integer.parseInt(range[0]);
                 end = Integer.parseInt(range[1]);
-                if(start < 1 || (pass > 0 && start <= (int)format.get(loc).get(pass - 1)[1]))
-                    throw new Exception();
+                if(start < 1 || (pass > 0 && start <= (int)format.get(loc).get(pass - 1).end))
+                {
+                    System.out.println("Overlapping range at line " + (loc + 1) + ", section " + (pass + 1));
+                    return;
+                }
             }
             catch(InputMismatchException e)
             {
                 System.out.println("Invalid range parameter");
                 return;
             }
-            catch(Exception e)
+            Segment s;
+            if(line.length == 3)
             {
-                System.out.println("Overlapping range at line " + (loc + 1) + ", parameter " + (pass + 1));
+                s = new Segment(start, end, desc);
+            }
+            else if(line.length >= 5)
+            {
+                int type;
+                String val;
+                try
+                {
+                    type = Integer.parseInt(line[3]);
+                    val = line[4];
+                }
+                catch(TypeMismatchException e)
+                {
+                    System.out.println("Type must be an integer from 0-2, error found on line " + (pass + 1) + ", section " + (loc + 1));
+                    return;
+                }
+                if(val.length() > (end - start + 1))
+                {
+                    System.out.println("Given value at " + (loc + 1) + ", section " + (pass + 1) + " is too long");
+                    return;
+                }
+                if(line.length > 5)
+                    System.out.println("Extraneous data found on line " + (pass + 1) + ", section " + (loc + 1) + ", continuing with extraneous data ignored");
+                s = new Segment(start, end, desc, type, val);
+            }
+            else
+            {
+                System.out.println("Unexpected amount of data found on line " + (pass + 1) + ", section " + (loc + 1));
                 return;
             }
-            Object[] arr = {start, end, desc};
-            format.get(loc).add(arr);
+            format.get(loc).add(s);
             pass++;
         }
         System.out.println(print(format));
@@ -68,30 +100,67 @@ public class Main
         {
             dataParams.add(sc2.nextLine().split("\t"));
         }
-        sc2.close();
-        for(ArrayList<Object[]> a : format)
+        for(String[] a : dataParams)
         {
-            for(Object[] b : a)
+            System.out.println(a[0] + ", " + a[1]);
+        }
+        sc2.close();
+        for(ArrayList<Segment> a : format)
+        {
+            for(Segment b : a)
             {
                 int index;
-                try
+                switch(b.type)
                 {
-                    index = find((String)b[2], dataParams);
-                }
-                catch(Exception e)
-                {
-                    System.out.println("Field not found in data: " + e.getMessage());
-                    return;
-                }
-                if(dataParams.get(index)[1].length() > ((int)b[1] - (int)b[0] + 1))
-                {
-                    System.out.println("Data for " + dataParams.get(index)[0] + " is too long. Length " + dataParams.get(index)[1].length() + " > " + ((int)b[1] - (int)b[0] + 1));
-                    return;
-                }
-                pw.print(dataParams.get(index)[1]);
-                for(int i = dataParams.get(index)[1].length(); i < ((int)b[1] - (int)b[0] + 1); i++)
-                {
-                    pw.print(" ");
+                    case FILL:
+                        try
+                        {
+                            index = find(b.desc, dataParams);
+                        }
+                        catch(Exception e)
+                        {
+                            System.out.println("Field not found in data: " + e.getMessage());
+                            return;
+                        }
+                        if(dataParams.get(index)[1].length() > b.length())
+                        {
+                            System.out.println(
+                                "Data for " + dataParams.get(index)[0] + " is too long. Length " + dataParams
+                                        .get(index)[1].length() + " > " + b.length());
+                            return;
+                        }
+                        pw.print(dataParams.get(index)[1]);
+                        for(int i = dataParams.get(index)[1].length(); i < b.length(); i++)
+                        {
+                            pw.print(" ");
+                        }
+                        break;
+                    case DEFAULT:
+                        try
+                        {
+                            index = find(b.desc, dataParams);
+                        }
+                        catch(Exception e)
+                        {
+                            pw.print(b.value);
+                            break;
+                        }
+                        if(dataParams.get(index)[1].length() > b.length())
+                        {
+                            System.out.println(
+                                    "Data for " + dataParams.get(index)[0] + " is too long. Length " + dataParams
+                                            .get(index)[1].length() + " > " + b.length());
+                            return;
+                        }
+                        pw.print(dataParams.get(index)[1]);
+                        for(int i = dataParams.get(index)[1].length(); i < b.length(); i++)
+                        {
+                            pw.print(" ");
+                        }
+                        break;
+                    case AUTO:
+                        pw.print(b.value);
+                        break;
                 }
             }
         }
@@ -103,7 +172,7 @@ public class Main
     {
         for(int i = 0; i < data.size(); i++)
         {
-            if(data.get(i)[0] == target)
+            if(target.equals(data.get(i)[0]))
             {
                 return i;
             }
@@ -111,23 +180,17 @@ public class Main
         throw new Exception(target);
     }
 
-    public static String print(ArrayList<ArrayList<Object[]>> a)
+    public static String print(ArrayList<ArrayList<Segment>> a)
     {
         String ret = "";
         for(int i = 0; i < a.size(); i++)
         {
             ret += "[";
-            ArrayList<Object[]> item = a.get(i);
+            ArrayList<Segment> item = a.get(i);
             for(int j = 0; j < item.size(); j++)
             {
                 ret += "[";
-                Object[] item2 = item.get(j);
-                for(int k = 0; k < item2.length; k++)
-                {
-                    ret += item2[k];
-                    if(k != item2.length - 1)
-                        ret += ", ";
-                }
+                ret += item.get(j).toString();
                 ret += "]";
                 if(j != item.size() - 1)
                     ret += ", ";

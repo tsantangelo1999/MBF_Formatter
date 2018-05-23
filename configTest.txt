@@ -1,5 +1,5 @@
-001-003	PIC X(3)	init
-004-006	PIC X(3)	test
-007-012	PIC X(6)	test2
+001-003	PIC X(3)	init	0	HDR
+004-006	PIC X(3)	test	0	MBF
+007-012	PIC X(6)	test2	1	53    
 013-020	PIC X(8)	end
 021-028	PIC X(8)	end2
