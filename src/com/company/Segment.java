@@ -6,28 +6,21 @@ public class Segment
     public int end;
     public String desc;
     public String value;
+    public char filler;
+    public boolean rightJust;
     public enum style
     {
         AUTO, DEFAULT, FILL
     }
     public style type;
-    public boolean rightJust;
 
-    public Segment(int s, int e, String d)
+    public Segment(int s, int e, String d, boolean r, char f, int t, String v)
     {
         start = s;
         end = e;
         desc = d;
-        rightJust = false;
-        type = style.FILL;
-        value = null;
-    }
-
-    public Segment(int s, int e, String d, int t, String v)
-    {
-        start = s;
-        end = e;
-        desc = d;
+        rightJust = r;
+        filler = f;
         if(t == 0)
         {
             type = style.AUTO;
@@ -35,6 +28,10 @@ public class Segment
         else if(t == 1)
         {
             type = style.DEFAULT;
+        }
+        else if(t == 2)
+        {
+            type = style.FILL;
         }
         value = v;
     }

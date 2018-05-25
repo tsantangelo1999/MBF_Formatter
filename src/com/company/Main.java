@@ -32,13 +32,127 @@ public class Main
                 continue;
             }
             String pos;
+            int posIndex = detailIndex(line, 'p');
             String form;
+            int formIndex = detailIndex(line, 'f');
             String desc;
+            int descIndex = detailIndex(line, 'd');
+            boolean right = false;
+            int rightIndex = detailIndex(line, 'r');
+            char fill = ' ';
+            int fillIndex = detailIndex(line, 'c'); //it's c for character i guess?
+            int type = 2;
+            int typeIndex = detailIndex(line, 't');
+            String val = "";
+            int valIndex = detailIndex(line, 'v');
+
+            //set position data
+            if(posIndex < 0)
+            {
+                missing("position", pass, loc);
+                return;
+            }
+            String[] range = line[posIndex].substring(2).split("\\-");
+            int start;
+            int end;
             try
+            {
+                start = Integer.parseInt(range[0]);
+                end = Integer.parseInt(range[1]);
+                if(start < 1 || (pass > 0 && start <= format.get(loc).get(pass - 1).end))
+                {
+                    System.out.println("Overlapping range at line " + (pass + 1)
+                            + ", section " + (loc + 1));
+                    return;
+                }
+            }
+            catch(InputMismatchException e)
+            {
+                System.out.println("Invalid range parameter");
+                return;
+            }
+            //if form is useful, put that stuff here
+
+            //set description
+            if(descIndex < 0)
+            {
+                missing("description", pass, loc);
+                return;
+            }
+            desc = line[descIndex].substring(2);
+
+            //set right justification
+            if(rightIndex >= 0)
+            {
+                String r = line[rightIndex].substring(2);
+                if(!(r.equalsIgnoreCase("true") || r.equalsIgnoreCase("false") || r.equals("")))
+                    System.out.println("Right justification boolean is not true, false, or blank at line " + (pass + 1) + ", section " + (loc + 1) + ", continuing as if it were false");
+                right = Boolean.valueOf(r);
+            }
+
+            //set filler character
+            if(fillIndex >= 0)
+            {
+                try
+                {
+                    fill = line[fillIndex].charAt(2);
+                }
+                catch(IndexOutOfBoundsException e)
+                {
+                    System.out.println("Fill parameter blank at line " + (pass + 1) + ", section " + (loc + 1) + ", using spaces");
+                    fill = ' ';
+                }
+            }
+
+            //set type
+            if(typeIndex >= 0)
+            {
+                try
+                {
+                    type = Integer.parseInt(line[typeIndex].substring(2));
+                    if(type < 0 || type > 2)
+                        throw new TypeMismatchException();
+                }
+                catch(TypeMismatchException e)
+                {
+                    System.out.println("Type must be an integer from 0-2, error found on line " + (pass + 1) + ", section " + (loc + 1));
+                    return;
+                }
+            }
+
+            //set default value
+            if(valIndex < 0 && (type == 0 || type == 1))
+            {
+                System.out.println("No default value found on line " + (pass + 1) + ", section " + (loc + 1) + ", continuing by filling space with filler character");
+            }
+            if(valIndex >= 0)
+            {
+                val = line[valIndex].substring(2);
+                if(val.length() > (end - start + 1))
+                {
+                    System.out.println("Given value at line " + (pass + 1) + ", section " + (loc + 1) + " is too long");
+                    return;
+                }
+            }
+
+            Segment s = new Segment(start, end, desc, right, fill, type, val);
+            format.get(loc).add(s);
+            /*try
             {
                 pos = line[0];
                 form = line[1];
                 desc = line[2];
+                if(!(line[3].equalsIgnoreCase("true") || line[3].equalsIgnoreCase("false") || line[3].equals("")))
+                    System.out.println("Right justification boolean is not true, false, or blank at " + (loc + 1) + ", section " + (pass + 1) + ", continuing as if it were false");
+                right = Boolean.valueOf(line[3]);
+                try
+                {
+                    fill = line[4].charAt(0);
+                }
+                catch(IndexOutOfBoundsException e)
+                {
+                    fill = ' ';
+                }
             }
             catch(IndexOutOfBoundsException e)
             {
@@ -52,7 +166,7 @@ public class Main
             {
                 start = Integer.parseInt(range[0]);
                 end = Integer.parseInt(range[1]);
-                if(start < 1 || (pass > 0 && start <= (int)format.get(loc).get(pass - 1).end))
+                if(start < 1 || (pass > 0 && start <= format.get(loc).get(pass - 1).end))
                 {
                     System.out.println("Overlapping range at line " + (loc + 1) + ", section " + (pass + 1));
                     return;
@@ -64,9 +178,9 @@ public class Main
                 return;
             }
             Segment s;
-            if(line.length == 3)
+            if(line.length == 5)
             {
-                s = new Segment(start, end, desc);
+                s = new Segment(start, end, desc, right, fill);
             }
             else
             {
@@ -74,8 +188,8 @@ public class Main
                 String val;
                 try
                 {
-                    type = Integer.parseInt(line[3]);
-                    val = line[4];
+                    type = Integer.parseInt(line[5]);
+                    val = line[6];
                 }
                 catch(TypeMismatchException e)
                 {
@@ -91,11 +205,12 @@ public class Main
                     System.out.println("Given value at " + (loc + 1) + ", section " + (pass + 1) + " is too long");
                     return;
                 }
-                if(line.length > 5)
+                if(line.length > 7)
                     System.out.println("Extraneous data found on line " + (pass + 1) + ", section " + (loc + 1) + ", continuing with extraneous data ignored");
-                s = new Segment(start, end, desc, type, val);
+                s = new Segment(start, end, desc, right, fill, type, val);
             }
             format.get(loc).add(s);
+            */
             pass++;
         }
         System.out.println(print(format));
@@ -145,7 +260,7 @@ public class Main
                         {
                             for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
                             {
-                                pw.print(" ");
+                                pw.print(b.filler);
                             }
                         }
                         pw.print(dataHere.get(index)[1]);
@@ -153,7 +268,7 @@ public class Main
                         {
                             for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
                             {
-                                pw.print(" ");
+                                pw.print(b.filler);
                             }
                         }
                         break;
@@ -168,7 +283,7 @@ public class Main
                             {
                                 for(int j = b.value.length(); j < b.length(); j++)
                                 {
-                                    pw.print(" ");
+                                    pw.print(b.filler);
                                 }
                             }
                             pw.print(b.value);
@@ -176,7 +291,7 @@ public class Main
                             {
                                 for(int j = b.value.length(); j < b.length(); j++)
                                 {
-                                    pw.print(" ");
+                                    pw.print(b.filler);
                                 }
                             }
                             break;
@@ -192,7 +307,7 @@ public class Main
                         {
                             for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
                             {
-                                pw.print(" ");
+                                pw.print(b.filler);
                             }
                         }
                         pw.print(dataHere.get(index)[1]);
@@ -200,7 +315,7 @@ public class Main
                         {
                             for(int j = dataHere.get(index)[1].length(); j < b.length(); j++)
                             {
-                                pw.print(" ");
+                                pw.print(b.filler);
                             }
                         }
                         break;
@@ -209,7 +324,7 @@ public class Main
                         {
                             for(int j = b.value.length(); j < b.length(); j++)
                             {
-                                pw.print(" ");
+                                pw.print(b.filler);
                             }
                         }
                         pw.print(b.value);
@@ -217,7 +332,7 @@ public class Main
                         {
                             for(int j = b.value.length(); j < b.length(); j++)
                             {
-                                pw.print(" ");
+                                pw.print(b.filler);
                             }
                         }
                         break;
@@ -227,6 +342,16 @@ public class Main
         }
         pw.close();
         fw.close();
+    }
+
+    public static int detailIndex(String[] line, char s)
+    {
+        for(int i = 0; i < line.length; i++)
+        {
+            if(line[i].charAt(0) == s)
+                return i;
+        }
+        return -1;
     }
 
     public static int find(String target, ArrayList<String[]> data) throws Exception
@@ -239,6 +364,11 @@ public class Main
             }
         }
         throw new Exception(target);
+    }
+
+    public static void missing(String detail, int pass, int loc)
+    {
+        System.out.println("Missing " + detail + " parameter at line " + (loc + 1) + ", section " + (pass + 1));
     }
 
     public static String print(ArrayList<ArrayList<Segment>> a)

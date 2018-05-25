@@ -1,23 +1,47 @@
-001-003	PIC X(3)	Record Type	0	HDR
-004-006	PIC X(3)	File Title	0	MBF
-007-012	PIC X(6)	Merchant ISO Number	1	53    
-013-020	PIC X(8)	Processing Date
-021-028	PIC X(8)	File Creation Date
-029-034	PIC X(6)	File Creation Time
-035-038	PIC X(4)	Boarding ID
-039-048	PIC X(10)	Boarding Range Key	1	PAYFAC    
-049-058	PIC X(10)	Chain Key	1	CHAIN     
-059-068	PIC X(10)	Merchant ISC Number	1	VANTIV    
-069-078	PIC X(10)	Superchain Value	1
-079-600	PIC X(522)	Reserved spaces	0
+p:001-003	f:f:PIC X(3)	d:Record Type	t:0	v:HDR
+p:004-006	f:PIC X(3)	d:File Title	t:0	v:MBF
+p:007-012	f:PIC X(6)	d:Merchant ISO Number	t:1	v:53    
+p:013-020	f:PIC X(8)	d:Processing Date
+p:021-028	f:PIC X(8)	d:File Creation Date
+p:029-034	f:PIC X(6)	d:File Creation Time
+p:035-038	f:PIC X(4)	d:Boarding ID
+p:039-048	f:PIC X(10)	d:Boarding Range Key	t:1	v:PAYFAC    
+p:049-058	f:PIC X(10)	d:Chain Key	t:1	v:CHAIN     
+p:059-068	f:PIC X(10)	d:Merchant ISC Number	t:1	v:VANTIV    
+p:069-078	f:PIC X(10)	d:Superchain Value	t:1
+p:079-600	f:PIC X(522)	d:Reserved spaces	t:0
 -
-001-003	PIC X(3)	Record Type	0	CHN
-004-045	PIC X(42)	Filler	0
-046-051	PIC X(6)	Vantiv Chain Number
-052-600	PIC X(549)	Filler	0
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:CHN
+p:004-045	f:PIC X(42)	d:Filler	t:0
+p:046-051	f:PIC X(6)	d:Vantiv Chain Number
+p:052-600	f:PIC X(549)	d:Filler	t:0
 -
-001-003	PIC X(3)	Record Type	0	DIV
-004-005	PIC X(2)	Status	1	10
-006-008	PIC X(3)	Division Number	1	   
-009-038	PIC X(30)	Division Name
-039-600	PIC X(562)	Reserved spaces	0
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:DIV
+p:004-005	f:PIC X(2)	d:Status	t:1	v:10
+p:006-008	f:PIC X(3)	d:Division Number	r:true	c:0	t:1
+p:009-038	f:PIC X(30)	d:Division Name
+p:039-600	f:PIC X(562)	d:Reserved spaces	t:0
+-
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:STR
+p:004-004	f:PIC X(1)	d:Reserved space	t:0
+p:005-013	f:PIC X(9)	d:Store number	r:true	c:0	t:1
+p:014-053	f:PIC X(40)	d:Store Name
+p:054-079	f:PIC X(26)	d:Store Physical Address 1
+p:080-093	f:PIC X(14)	d:Filler	t:0
+p:094-119	f:PIC X(26)	d:Store Address 2
+p:120-133	f:PIC X(14)	d:Filler	t:0
+p:134-161	f:PIC X(28)	d:Store City
+p:162-163	f:PIC X(2)	d:Store State
+p:164-168	f:PIC X(5)	d:Store Zip
+p:169-172	f:PIC X(4)	d:Store Extended Zip
+p:173-181	f:PIC X(9)	d:Federal Tax ID
+p:182-187	f:PIC X(6)	d:Charge Back Mailing Address	t:1	v:M     
+p:188-193	f:PIC X(6)	d:Statement Mailing Address	t:1	v:M     
+p:194-233	f:PIC X(40)	d:Contact Name
+p:234-243	f:PIC X(10)	d:Contact Phone
+p:244-245	f:PIC X(2)	d:Store Time Zone
+p:246-325	f:PIC X(80)	d:Website URL
+p:326-329	f:PIC X(4)	d:Corp Public/Private Flag
+p:330-330	f:PIC X(1)	d:SEC-Registered Flag
+p:331-600	f:PIC X(270)	d:Reserved-spaces	t:0
+-
