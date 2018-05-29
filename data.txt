@@ -1,9 +1,10 @@
+-HDR
 Processing Date	20180522
 File Creation Date	20180523
 File Creation Time	115304
 Boarding ID	ACRO
--
+-CHN
 Vantiv Chain Number	145826
--
+-DIV
 Division Name	big division co
 Division Number	24

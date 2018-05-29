@@ -1,3 +1,14 @@
+HDR	CHN
+CHN	DIV
+DIV	STR
+STR	MCH
+MCH	RTE
+RTE	EQP,CNT,STR,DIV,CHN,TLR
+EQP	EQP,CNT,STR,DIV,CHN,TLR
+CNT	CNT,STR,DIV,CHN,TLR
+TLR
+-
+-HDR
 p:001-003	f:f:PIC X(3)	d:Record Type	t:0	v:HDR
 p:004-006	f:PIC X(3)	d:File Title	t:0	v:MBF
 p:007-012	f:PIC X(6)	d:Merchant ISO Number	t:1	v:53    
@@ -10,18 +21,18 @@ p:049-058	f:PIC X(10)	d:Chain Key	t:1	v:CHAIN
 p:059-068	f:PIC X(10)	d:Merchant ISC Number	t:1	v:VANTIV    
 p:069-078	f:PIC X(10)	d:Superchain Value	t:1
 p:079-600	f:PIC X(522)	d:Reserved spaces	t:0
--
+-CHN
 p:001-003	f:PIC X(3)	d:Record Type	t:0	v:CHN
 p:004-045	f:PIC X(42)	d:Filler	t:0
 p:046-051	f:PIC X(6)	d:Vantiv Chain Number
 p:052-600	f:PIC X(549)	d:Filler	t:0
--
+-DIV
 p:001-003	f:PIC X(3)	d:Record Type	t:0	v:DIV
 p:004-005	f:PIC X(2)	d:Status	t:1	v:10
 p:006-008	f:PIC X(3)	d:Division Number	r:true	c:0	t:1
 p:009-038	f:PIC X(30)	d:Division Name
 p:039-600	f:PIC X(562)	d:Reserved spaces	t:0
--
+-STR
 p:001-003	f:PIC X(3)	d:Record Type	t:0	v:STR
 p:004-004	f:PIC X(1)	d:Reserved space	t:0
 p:005-013	f:PIC X(9)	d:Store number	r:true	c:0	t:1
@@ -44,4 +55,35 @@ p:246-325	f:PIC X(80)	d:Website URL
 p:326-329	f:PIC X(4)	d:Corp Public/Private Flag
 p:330-330	f:PIC X(1)	d:SEC-Registered Flag
 p:331-600	f:PIC X(270)	d:Reserved-spaces	t:0
--
+-MCH
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:MCH
+p:004-019	f:PIC X(16)	d:Merchant Number	t:1
+p:020-024	f:PIC X(5)	d:Filler	r:true	c:0	t:0
+p:025-026	f:PIC X(2)	d:Status	t:1	v:10
+p:027-034	f:PIC X(8)	d:Date Merchant Added	t:1	v:$date
+p:035-042	f:PIC X(8)	d:Filler	t:0
+p:043-048	f:PIC X(6)	d:SIC/MCC Code
+p:049-056	f:PIC 9(8)	d:Average Ticket Price	r:true	c:0
+p:057-086	f:PIC X(30)	d:Merchant Name
+p:087-103	f:PIC X(17)	d:DDA
+p:104-112	f:PIC X(9)	d:ABA
+p:113-137	f:PIC X(25)	d:Filler	t:0
+p:138-140	f:PIC 9(3)	d:Swipe Percentage
+p:141-181	f:PIC X(41)	d:Filler	t:0
+p:182-183	f:PIC X(2)	d:Voucher Flags	t:1	v:07
+p:184-185	f:PIC X(2)	d:Processor	t:1	v:05
+p:186-194	f:PIC X(9)	d:Filler	t:0
+p:195-220	f:PIC X(26)	d:Alternate Mail Address 1
+p:221-234	f:PIC X(14)	d:Filler	t:0
+p:235-260	f:PIC X(26)	d:Alternate Mail Address 2
+p:261-274	f:PIC X(14)	d:Filler	t:0
+p:275-302	f:PIC X(28)	d:Alternate Mail City
+p:303-304	f:PIC X(2)	d:Alternate Mail State
+p:305-309	f:PIC X(5)	d:Alternate Mail Zip
+p:310-313	f:PIC X(4)	d:Alternate Mail Extended Zip
+p:314-363	f:PIC X(50)	d:Filler	t:0
+p:364-375	f:PIC X(12)	d:Customer Specific Merchant Level ID
+p:376-385	f:PIC X(10)	d:Customer Service Phone
+p:386-401	f:PIC X(16)	d:Filler	t:0
+p:402-403	f:PIC X(2)	d:Alternate Mail Time Zone
+p:404-404	f:PIC X(1)	d:SEASONAL MONTH FLAG JANUARY

@@ -1,8 +1,8 @@
 package com.company;
 
-import com.sun.corba.se.impl.io.TypeMismatchException;
-
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Main
@@ -15,26 +15,58 @@ public class Main
         FileWriter fw = new FileWriter("MBF.txt");
         PrintWriter pw = new PrintWriter(fw);
         Scanner sc = new Scanner(config);
-        ArrayList<ArrayList<Segment>> format = new ArrayList<>();
+        ArrayList<RecordType> format = new ArrayList<>();
         //first arraylist defines each line, second arraylist contains parameters for the respective line
-        //parameters currently are startIndex, endIndex, fieldDescription
-        format.add(new ArrayList<Segment>());
+        //parameters currently are startIndex s, endIndex e, fieldDescription d, right alignment r, default fill character f, field type t, default value v
         int loc = 0;
         int pass = 0;
+        boolean setup = true;
+        boolean first = true;
+        RecordType current = null;
         while(sc.hasNextLine())
         {
+            //establish record types and hierarchy
             String[] line = sc.nextLine().split("\t");
-            if(line.length == 1 && line[0].equals("-"))
+            if(setup)
             {
-                loc++;
-                format.add(new ArrayList<Segment>());
-                pass = 0;
+                if(line[0].charAt(0) == '-')
+                {
+                    setup = false;
+                    continue;
+                }
+                format.add(new RecordType(line[0], line[1].split(","), first));
+                first = false;
                 continue;
             }
-            String pos;
+
+            //move on to next record type
+            if(line[0].charAt(0) == '-')
+            {
+                try
+                {
+                    loc = getIndex(line[0].substring(1), format);
+                }
+                catch(Exception e)
+                {
+                    System.out.println("No such record type " + e.getMessage() + " exists");
+                    return;
+                }
+                pass = 0;
+                current = format.get(loc);
+                continue;
+            }
+
+            //run a check
+            if(current == null)
+            {
+                System.out.println("No current record type specified");
+                return;
+            }
+
+            //add a parameter
             int posIndex = detailIndex(line, 'p');
-            String form;
-            int formIndex = detailIndex(line, 'f');
+            //String form;
+            //int formIndex = detailIndex(line, 'f');
             String desc;
             int descIndex = detailIndex(line, 'd');
             boolean right = false;
@@ -59,7 +91,7 @@ public class Main
             {
                 start = Integer.parseInt(range[0]);
                 end = Integer.parseInt(range[1]);
-                if(start < 1 || (pass > 0 && start <= format.get(loc).get(pass - 1).end))
+                if(start < 1 || (pass > 0 && start <= current.parameters.get(pass - 1).end))
                 {
                     System.out.println("Overlapping range at line " + (pass + 1)
                             + ", section " + (loc + 1));
@@ -111,9 +143,9 @@ public class Main
                 {
                     type = Integer.parseInt(line[typeIndex].substring(2));
                     if(type < 0 || type > 2)
-                        throw new TypeMismatchException();
+                        throw new Exception();
                 }
-                catch(TypeMismatchException e)
+                catch(Exception e)
                 {
                     System.out.println("Type must be an integer from 0-2, error found on line " + (pass + 1) + ", section " + (loc + 1));
                     return;
@@ -128,6 +160,17 @@ public class Main
             if(valIndex >= 0)
             {
                 val = line[valIndex].substring(2);
+
+                //special cases
+                if(val.charAt(0) == '$')
+                {
+                    if(val.substring(1).equals("date"))
+                    {
+                        DateFormat df = new SimpleDateFormat("yyyyMMdd");
+                        Date date = new Date();
+                        val = df.format(date);
+                    }
+                }
                 if(val.length() > (end - start + 1))
                 {
                     System.out.println("Given value at line " + (pass + 1) + ", section " + (loc + 1) + " is too long");
@@ -136,102 +179,44 @@ public class Main
             }
 
             Segment s = new Segment(start, end, desc, right, fill, type, val);
-            format.get(loc).add(s);
-            /*try
-            {
-                pos = line[0];
-                form = line[1];
-                desc = line[2];
-                if(!(line[3].equalsIgnoreCase("true") || line[3].equalsIgnoreCase("false") || line[3].equals("")))
-                    System.out.println("Right justification boolean is not true, false, or blank at " + (loc + 1) + ", section " + (pass + 1) + ", continuing as if it were false");
-                right = Boolean.valueOf(line[3]);
-                try
-                {
-                    fill = line[4].charAt(0);
-                }
-                catch(IndexOutOfBoundsException e)
-                {
-                    fill = ' ';
-                }
-            }
-            catch(IndexOutOfBoundsException e)
-            {
-                System.out.println("Invalid format");
-                return;
-            }
-            String[] range = pos.split("\\-");
-            int start;
-            int end;
-            try
-            {
-                start = Integer.parseInt(range[0]);
-                end = Integer.parseInt(range[1]);
-                if(start < 1 || (pass > 0 && start <= format.get(loc).get(pass - 1).end))
-                {
-                    System.out.println("Overlapping range at line " + (loc + 1) + ", section " + (pass + 1));
-                    return;
-                }
-            }
-            catch(InputMismatchException e)
-            {
-                System.out.println("Invalid range parameter");
-                return;
-            }
-            Segment s;
-            if(line.length == 5)
-            {
-                s = new Segment(start, end, desc, right, fill);
-            }
-            else
-            {
-                int type = -1;
-                String val;
-                try
-                {
-                    type = Integer.parseInt(line[5]);
-                    val = line[6];
-                }
-                catch(TypeMismatchException e)
-                {
-                    System.out.println("Type must be an integer from 0-1, error found on line " + (pass + 1) + ", section " + (loc + 1));
-                    return;
-                }
-                catch(IndexOutOfBoundsException e)
-                {
-                    val = "";
-                }
-                if(val.length() > (end - start + 1))
-                {
-                    System.out.println("Given value at " + (loc + 1) + ", section " + (pass + 1) + " is too long");
-                    return;
-                }
-                if(line.length > 7)
-                    System.out.println("Extraneous data found on line " + (pass + 1) + ", section " + (loc + 1) + ", continuing with extraneous data ignored");
-                s = new Segment(start, end, desc, right, fill, type, val);
-            }
-            format.get(loc).add(s);
-            */
+            current.parameters.add(s);
             pass++;
         }
         System.out.println(print(format));
         sc.close();
         Scanner sc2 = new Scanner(data);
-        ArrayList<ArrayList<String[]>> dataParams = new ArrayList<>();
-        dataParams.add(new ArrayList<String[]>());
-        loc = 0;
+        ArrayList<Data> dataParams = new ArrayList<>();
+        int where = -1;
+        current = null;
         while(sc2.hasNextLine())
         {
             String[] line = sc2.nextLine().split("\t");
-            if(line.length == 1 && line[0].equals("-"))
+            if(line[0].charAt(0) == '-')
             {
-                loc++;
-                dataParams.add(new ArrayList<String[]>());
+                try
+                {
+                    loc = getIndex(line[0].substring(1), format);
+                }
+                catch(Exception e)
+                {
+                    System.out.println(line[0].substring(1) + " is not found as a valid record type");
+                    return;
+                }
+                if(!format.get(loc).leads && (!(current != null && current.before(format.get(loc).name))))
+                {
+                    System.out.println(format.get(loc).name + " either may not lead" + (current == null ? "" : " or come after " + current.name));
+                    return;
+                }
+                dataParams.add(new Data(line[0].substring(1)));
+                where++;
+                current = format.get(loc);
                 continue;
             }
-            dataParams.get(loc).add(line);
+            dataParams.get(where).data.add(line);
         }
         sc2.close();
-        for(int i = 0; i < format.size(); i++)
+
+        /*for(int i = 0; i < format.size(); i++)
         {
             ArrayList<String[]> dataHere = dataParams.get(i);
             for(Segment b : format.get(i))
@@ -339,7 +324,7 @@ public class Main
                 }
             }
             pw.println();
-        }
+        }*/
         pw.close();
         fw.close();
     }
@@ -354,14 +339,22 @@ public class Main
         return -1;
     }
 
+    public static int getIndex(String target, ArrayList<RecordType> data) throws Exception
+    {
+        for(int i = 0; i < data.size(); i++)
+        {
+            if(target.equals(data.get(i).name))
+                return i;
+        }
+        throw new Exception(target);
+    }
+
     public static int find(String target, ArrayList<String[]> data) throws Exception
     {
         for(int i = 0; i < data.size(); i++)
         {
             if(target.equals(data.get(i)[0]))
-            {
                 return i;
-            }
         }
         throw new Exception(target);
     }
@@ -371,19 +364,19 @@ public class Main
         System.out.println("Missing " + detail + " parameter at line " + (loc + 1) + ", section " + (pass + 1));
     }
 
-    public static String print(ArrayList<ArrayList<Segment>> a)
+    public static String print(ArrayList<RecordType> a)
     {
         String ret = "";
         for(int i = 0; i < a.size(); i++)
         {
             ret += "[";
-            ArrayList<Segment> item = a.get(i);
-            for(int j = 0; j < item.size(); j++)
+            RecordType item = a.get(i);
+            for(int j = 0; j < item.parameters.size(); j++)
             {
                 ret += "[";
-                ret += item.get(j).toString();
+                ret += item.parameters.get(j).toString();
                 ret += "]";
-                if(j != item.size() - 1)
+                if(j != item.parameters.size() - 1)
                     ret += ", ";
             }
             ret += "]";
