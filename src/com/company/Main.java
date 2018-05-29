@@ -153,10 +153,6 @@ public class Main
             }
 
             //set default value
-            if(valIndex < 0 && (type == 0 || type == 1))
-            {
-                System.out.println("No default value found on line " + (pass + 1) + ", section " + (loc + 1) + ", continuing by filling space with filler character");
-            }
             if(valIndex >= 0)
             {
                 val = line[valIndex].substring(2);
@@ -213,6 +209,11 @@ public class Main
                 continue;
             }
             dataParams.get(where).data.add(line);
+        }
+        if(!format.get(loc).ends)
+        {
+            System.out.println("Ending record is not valid");
+            return;
         }
         sc2.close();
 
@@ -369,7 +370,7 @@ public class Main
 
     public static void missing(String detail, int pass, int loc)
     {
-        System.out.println("Missing " + detail + " parameter at line " + (loc + 1) + ", section " + (pass + 1));
+        System.out.println("Missing " + detail + " parameter at line " + (pass + 1) + ", section " + (loc + 1));
     }
 
     public static String print(ArrayList<RecordType> a)

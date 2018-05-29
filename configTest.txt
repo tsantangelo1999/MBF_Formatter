@@ -113,11 +113,11 @@ p:058-063	f:PIC X(6)	d:Card Type 2	t:1
 p:064-084	f:PIC X(21)	d:External Account Number 2	t:1
 p:085-093	f:PIC 9(9)	d:Sales Volume 2	t:1
 p:094-100	f:PIC 9(7)	d:Ticket Average 2	t:1
-p:101-102	f:PIC X(2)	Discount Method 2	t:1
+p:101-102	f:PIC X(2)	d:Discount Method 2	t:1
 p:103-111	f:PIC 9(4)v9(5)	d:Discount Percentage 2	t:1
 p:112-117	f:PIC X(6)	d:Card Type 3	t:1
 p:118-138	f:PIC X(21)	d:External Account Number 3	t:1
 p:139-147	f:PIC 9(9)	d:Sales Volume 3	t:1
 p:148-154	f:PIC 9(7)	d:Ticket Average 3	t:1
-p:155-156	f:PIC X(2)	Discount Method 3	t:1
+p:155-156	f:PIC X(2)	d:Discount Method 3	t:1
 p:157-165	f:PIC 9(4)v9(5)	d:Discount Percentage 3	t:1

@@ -8,6 +8,7 @@ public class RecordType
     public String[] precedes;
     public ArrayList<Segment> parameters;
     public boolean leads;
+    public boolean ends;
 
     public RecordType(String s, String[] p, boolean l)
     {
@@ -15,6 +16,10 @@ public class RecordType
         precedes = p;
         leads = l;
         parameters = new ArrayList<>();
+        if(precedes == null)
+            ends = true;
+        else
+            ends = false;
     }
 
     public boolean before(String t)
