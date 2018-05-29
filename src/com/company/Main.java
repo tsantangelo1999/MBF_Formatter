@@ -34,7 +34,7 @@ public class Main
                     setup = false;
                     continue;
                 }
-                format.add(new RecordType(line[0], line[1].split(","), first));
+                format.add(new RecordType(line[0], (line.length > 1 ? line[1].split(",") : null), first));
                 first = false;
                 continue;
             }
@@ -216,10 +216,18 @@ public class Main
         }
         sc2.close();
 
-        /*for(int i = 0; i < format.size(); i++)
+        for(Data d : dataParams)
         {
-            ArrayList<String[]> dataHere = dataParams.get(i);
-            for(Segment b : format.get(i))
+            try
+            {
+                loc = getIndex(d.name, format);
+            }
+            catch(Exception e)
+            {
+                System.out.println("there should never be an error here");
+            }
+            ArrayList<String[]> dataHere = d.data;
+            for(Segment b : format.get(loc).parameters)
             {
                 int index;
                 switch(b.type)
@@ -234,11 +242,11 @@ public class Main
                             System.out.println("Field not found in data: " + e.getMessage());
                             return;
                         }
-                        if(dataParams.get(i).get(index)[1].length() > b.length())
+                        if(dataHere.get(index)[1].length() > b.length())
                         {
                             System.out.println(
-                                "Data for " + dataParams.get(i).get(index)[0] + " is too long. Length " + dataHere
-                                        .get(index)[1].length() + " > " + b.length());
+                                    "Data for " + dataHere.get(index)[0] + " is too long. Length " + dataHere
+                                            .get(index)[1].length() + " > " + b.length());
                             return;
                         }
                         if(b.rightJust)
@@ -324,7 +332,7 @@ public class Main
                 }
             }
             pw.println();
-        }*/
+        }
         pw.close();
         fw.close();
     }

@@ -39,21 +39,21 @@ p:005-013	f:PIC X(9)	d:Store number	r:true	c:0	t:1
 p:014-053	f:PIC X(40)	d:Store Name
 p:054-079	f:PIC X(26)	d:Store Physical Address 1
 p:080-093	f:PIC X(14)	d:Filler	t:0
-p:094-119	f:PIC X(26)	d:Store Address 2
+p:094-119	f:PIC X(26)	d:Store Address 2	t:1
 p:120-133	f:PIC X(14)	d:Filler	t:0
 p:134-161	f:PIC X(28)	d:Store City
 p:162-163	f:PIC X(2)	d:Store State
 p:164-168	f:PIC X(5)	d:Store Zip
-p:169-172	f:PIC X(4)	d:Store Extended Zip
-p:173-181	f:PIC X(9)	d:Federal Tax ID
+p:169-172	f:PIC X(4)	d:Store Extended Zip	t:1
+p:173-181	f:PIC X(9)	d:Federal Tax ID	t:1
 p:182-187	f:PIC X(6)	d:Charge Back Mailing Address	t:1	v:M     
 p:188-193	f:PIC X(6)	d:Statement Mailing Address	t:1	v:M     
-p:194-233	f:PIC X(40)	d:Contact Name
-p:234-243	f:PIC X(10)	d:Contact Phone
-p:244-245	f:PIC X(2)	d:Store Time Zone
-p:246-325	f:PIC X(80)	d:Website URL
-p:326-329	f:PIC X(4)	d:Corp Public/Private Flag
-p:330-330	f:PIC X(1)	d:SEC-Registered Flag
+p:194-233	f:PIC X(40)	d:Contact Name	t:1
+p:234-243	f:PIC X(10)	d:Contact Phone	t:1
+p:244-245	f:PIC X(2)	d:Store Time Zone	t:1
+p:246-325	f:PIC X(80)	d:Website URL	t:1
+p:326-329	f:PIC X(4)	d:Corp Public/Private Flag	t:1
+p:330-330	f:PIC X(1)	d:SEC-Registered Flag	t:1
 p:331-600	f:PIC X(270)	d:Reserved-spaces	t:0
 -MCH
 p:001-003	f:PIC X(3)	d:Record Type	t:0	v:MCH
@@ -65,25 +65,59 @@ p:035-042	f:PIC X(8)	d:Filler	t:0
 p:043-048	f:PIC X(6)	d:SIC/MCC Code
 p:049-056	f:PIC 9(8)	d:Average Ticket Price	r:true	c:0
 p:057-086	f:PIC X(30)	d:Merchant Name
-p:087-103	f:PIC X(17)	d:DDA
-p:104-112	f:PIC X(9)	d:ABA
+p:087-103	f:PIC X(17)	d:DDA	t:1
+p:104-112	f:PIC X(9)	d:ABA	t:1
 p:113-137	f:PIC X(25)	d:Filler	t:0
-p:138-140	f:PIC 9(3)	d:Swipe Percentage
+p:138-140	f:PIC 9(3)	d:Swipe Percentage	t:1
 p:141-181	f:PIC X(41)	d:Filler	t:0
 p:182-183	f:PIC X(2)	d:Voucher Flags	t:1	v:07
 p:184-185	f:PIC X(2)	d:Processor	t:1	v:05
 p:186-194	f:PIC X(9)	d:Filler	t:0
-p:195-220	f:PIC X(26)	d:Alternate Mail Address 1
+p:195-220	f:PIC X(26)	d:Alternate Mail Address 1	t:1
 p:221-234	f:PIC X(14)	d:Filler	t:0
-p:235-260	f:PIC X(26)	d:Alternate Mail Address 2
+p:235-260	f:PIC X(26)	d:Alternate Mail Address 2	t:1
 p:261-274	f:PIC X(14)	d:Filler	t:0
-p:275-302	f:PIC X(28)	d:Alternate Mail City
-p:303-304	f:PIC X(2)	d:Alternate Mail State
-p:305-309	f:PIC X(5)	d:Alternate Mail Zip
-p:310-313	f:PIC X(4)	d:Alternate Mail Extended Zip
+p:275-302	f:PIC X(28)	d:Alternate Mail City	t:1
+p:303-304	f:PIC X(2)	d:Alternate Mail State	t:1
+p:305-309	f:PIC X(5)	d:Alternate Mail Zip	t:1
+p:310-313	f:PIC X(4)	d:Alternate Mail Extended Zip	t:1
 p:314-363	f:PIC X(50)	d:Filler	t:0
-p:364-375	f:PIC X(12)	d:Customer Specific Merchant Level ID
-p:376-385	f:PIC X(10)	d:Customer Service Phone
+p:364-375	f:PIC X(12)	d:Customer Specific Merchant Level ID	t:1
+p:376-385	f:PIC X(10)	d:Customer Service Phone	t:1
 p:386-401	f:PIC X(16)	d:Filler	t:0
-p:402-403	f:PIC X(2)	d:Alternate Mail Time Zone
-p:404-404	f:PIC X(1)	d:SEASONAL MONTH FLAG JANUARY
+p:402-403	f:PIC X(2)	d:Alternate Mail Time Zone	t:1
+p:404-404	f:PIC X(1)	d:SEASONAL MONTH FLAG JANUARY	t:1
+p:405-405	f:PIC X(1)	d:SEASONAL MONTH FLAG FEBRUARY	t:1
+p:406-406	f:PIC X(1)	d:SEASONAL MONTH FLAG MARCH	t:1
+p:407-407	f:PIC X(1)	d:SEASONAL MONTH FLAG APRIL	t:1
+p:408-408	f:PIC X(1)	d:SEASONAL MONTH FLAG MAY	t:1
+p:409-409	f:PIC X(1)	d:SEASONAL MONTH FLAG JUNE	t:1
+p:410-410	f:PIC X(1)	d:SEASONAL MONTH FLAG JULY	t:1
+p:411-411	f:PIC X(1)	d:SEASONAL MONTH FLAG AUGUST	t:1
+p:412-412	f:PIC X(1)	d:SEASONAL MONTH FLAG SEPTEMBER	t:1
+p:413-413	f:PIC X(1)	d:SEASONAL MONTH FLAG OCTOBER	t:1
+p:414-414	f:PIC X(1)	d:SEASONAL MONTH FLAG NOVEMBER	t:1
+p:415-415	f:PIC X(1)	d:SEASONAL MONTH FLAG DECEMBER	t:1
+p:416-425	f:PIC X(10)	d:EXPRESS ACCOUNT	c:0	t:1
+p:426-435	f:PIC X(10)	d:EXPRESS SUB ACCOUNT	c:0	t:1
+p:436-600	f:PIC X(165)	d:Reserved-spaces	t:0
+-RTE
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:RTE
+p:004-009	f:PIC X(6)	d:Card Type 1	t:1
+p:010-030	f:PIC X(21)	d:External Account Number 1	t:1
+p:031-039	f:PIC 9(9)	d:Sales Volume 1	t:1
+p:040-046	f:PIC 9(7)	d:Ticket Average 1	t:1
+p:047-048	f:PIC X(2)	d:Discount Method 1	t:1	v:09
+p:049-057	f:PIC 9(4)v9(5)	d:Discount Percentage 1	t:1
+p:058-063	f:PIC X(6)	d:Card Type 2	t:1
+p:064-084	f:PIC X(21)	d:External Account Number 2	t:1
+p:085-093	f:PIC 9(9)	d:Sales Volume 2	t:1
+p:094-100	f:PIC 9(7)	d:Ticket Average 2	t:1
+p:101-102	f:PIC X(2)	Discount Method 2	t:1
+p:103-111	f:PIC 9(4)v9(5)	d:Discount Percentage 2	t:1
+p:112-117	f:PIC X(6)	d:Card Type 3	t:1
+p:118-138	f:PIC X(21)	d:External Account Number 3	t:1
+p:139-147	f:PIC 9(9)	d:Sales Volume 3	t:1
+p:148-154	f:PIC 9(7)	d:Ticket Average 3	t:1
+p:155-156	f:PIC X(2)	Discount Method 3	t:1
+p:157-165	f:PIC 9(4)v9(5)	d:Discount Percentage 3	t:1
