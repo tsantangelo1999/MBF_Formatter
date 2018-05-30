@@ -1,10 +1,57 @@
 -HDR
 Processing Date	20180522
-File Creation Date	20180523
-File Creation Time	115304
 Boarding ID	ACRO
 -CHN
 Vantiv Chain Number	145826
 -DIV
-Division Name	big division co
 Division Number	24
+Division Name	big division co
+-STR
+Store Number	4
+Store Name	the big store
+Store Physical Address 1	123 road lane
+Store City	city
+Store State	PA
+Store Zip	12345
+Contact Name	name
+Contact Phone	6102584491
+Store Time Zone	01
+Website URL	www.website.web
+-MCH
+SIC/MCC Code	8425
+Average Ticket Price	200
+Merchant Name	other name
+Swipe Percentage	89
+Customer Specific Merchant Level ID	9cw4txk
+Customer Service Phone	2152152115
+-RTE
+Card Type 1	MASTER
+Sales Volume 1	2492
+Ticket Average 1	334
+Discount Percentage 1	000250000
+-EQP
+Equipment Code	420
+Environment	RETL
+Card Type 1	MASTER
+Auto Close	H
+Customer Specific Terminal Level ID	8cw5txk
+-CNT
+Contact Level	MCH
+Contact Type	C0
+Contact Name Full Name	another name
+Contact First Name	another
+Contact Last Name	name
+Title	Mr.
+Address Line 1	321 lane road
+City	a city
+State	PA
+Zip Code	15973
+Phone	610123456
+E-Mail	anothername80@gmail.com
+SSN	123456789
+Percent Owned	95
+Date of Birth	10101980
+Time Zone	01
+-TLR
+Number of Chains in File	1
+Physical Record Count (Including Trailer Record) on MBF	9

@@ -4,6 +4,7 @@ public class Segment
 {
     public int start;
     public int end;
+    public String form;
     public String desc;
     public String value;
     public char filler;
@@ -14,13 +15,14 @@ public class Segment
     }
     public style type;
 
-    public Segment(int s, int e, String d, boolean r, char f, int t, String v)
+    public Segment(int s, int e, String f, String d, boolean r, char c, int t, String v)
     {
         start = s;
         end = e;
+        form = f;
         desc = d;
         rightJust = r;
-        filler = f;
+        filler = c;
         if(t == 0)
         {
             type = style.AUTO;

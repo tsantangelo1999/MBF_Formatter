@@ -13,8 +13,8 @@ p:001-003	f:f:PIC X(3)	d:Record Type	t:0	v:HDR
 p:004-006	f:PIC X(3)	d:File Title	t:0	v:MBF
 p:007-012	f:PIC X(6)	d:Merchant ISO Number	t:1	v:53    
 p:013-020	f:PIC X(8)	d:Processing Date
-p:021-028	f:PIC X(8)	d:File Creation Date
-p:029-034	f:PIC X(6)	d:File Creation Time
+p:021-028	f:PIC X(8)	d:File Creation Date	t:0	v:$date
+p:029-034	f:PIC X(6)	d:File Creation Time	t:0	v:$time
 p:035-038	f:PIC X(4)	d:Boarding ID
 p:039-048	f:PIC X(10)	d:Boarding Range Key	t:1	v:PAYFAC    
 p:049-058	f:PIC X(10)	d:Chain Key	t:1	v:CHAIN     
@@ -35,7 +35,7 @@ p:039-600	f:PIC X(562)	d:Reserved spaces	t:0
 -STR
 p:001-003	f:PIC X(3)	d:Record Type	t:0	v:STR
 p:004-004	f:PIC X(1)	d:Reserved space	t:0
-p:005-013	f:PIC X(9)	d:Store number	r:true	c:0	t:1
+p:005-013	f:PIC X(9)	d:Store Number	r:true	c:0	t:1
 p:014-053	f:PIC X(40)	d:Store Name
 p:054-079	f:PIC X(26)	d:Store Physical Address 1
 p:080-093	f:PIC X(14)	d:Filler	t:0
@@ -121,3 +121,103 @@ p:139-147	f:PIC 9(9)	d:Sales Volume 3	t:1
 p:148-154	f:PIC 9(7)	d:Ticket Average 3	t:1
 p:155-156	f:PIC X(2)	d:Discount Method 3	t:1
 p:157-165	f:PIC 9(4)v9(5)	d:Discount Percentage 3	t:1
+p:166-171	f:PIC X(6)	d:Card Type 4	t:1
+p:172-192	f:PIC X(21)	d:External Account Number 4	t:1
+p:193-201	f:PIC 9(9)	d:Sales Volume 4	t:1
+p:202-208	f:PIC 9(7)	d:Ticket Average 4	t:1
+p:209-210	f:PIC X(2)	d:Discount Method 4	t:1
+p:211-219	f:PIC 9(4)v9(5)	d:Discount Percentage 4	t:1
+p:220-225	f:PIC X(6)	d:Card Type 5	t:1
+p:226-246	f:PIC X(21)	d:External Account Number 5	t:1
+p:247-255	f:PIC 9(9)	d:Sales Volume 5	t:1
+p:256-262	f:PIC 9(7)	d:Ticket Average 5	t:1
+p:263-264	f:PIC X(2)	d:Discount Method 5	t:1
+p:265-273	f:PIC 9(4)v9(5)	d:Discount Percentage 5	t:1
+p:274-279	f:PIC X(6)	d:Card Type 6	t:1
+p:280-300	f:PIC X(21)	d:External Account Number 6	t:1
+p:301-309	f:PIC 9(9)	d:Sales Volume 6	t:1
+p:310-316	f:PIC 9(7)	d:Ticket Average 6	t:1
+p:317-318	f:PIC X(2)	d:Discount Method 6	t:1
+p:319-327	f:PIC 9(4)v9(5)	d:Discount Percentage 6	t:1
+p:328-333	f:PIC X(6)	d:Card Type 7	t:1
+p:334-354	f:PIC X(21)	d:External Account Number 7	t:1
+p:355-363	f:PIC 9(9)	d:Sales Volume 7	t:1
+p:364-370	f:PIC 9(7)	d:Ticket Average 7	t:1
+p:371-372	f:PIC X(2)	d:Discount Method 7	t:1
+p:373-381	f:PIC 9(4)v9(5)	d:Discount Percentage 7	t:1
+p:382-387	f:PIC X(6)	d:Card Type 8	t:1
+p:388-408	f:PIC X(21)	d:External Account Number 8	t:1
+p:409-417	f:PIC 9(9)	d:Sales Volume 8	t:1
+p:418-424	f:PIC 9(7)	d:Ticket Average 8	t:1
+p:425-426	f:PIC X(2)	d:Discount Method 8	t:1
+p:427-435	f:PIC 9(4)v9(5)	d:Discount Percentage 8	t:1
+p:436-441	f:PIC X(6)	d:Card Type 9	t:1
+p:442-462	f:PIC X(21)	d:External Account Number 9	t:1
+p:463-471	f:PIC 9(9)	d:Sales Volume 9	t:1
+p:472-478	f:PIC 9(7)	d:Ticket Average 9	t:1
+p:479-480	f:PIC X(2)	d:Discount Method 9	t:1
+p:481-489	f:PIC 9(4)v9(5)	d:Discount Percentage 9	t:1
+p:490-495	f:PIC X(6)	d:Card Type 10	t:1
+p:496-516	f:PIC X(21)	d:External Account Number 10	t:1
+p:517-525	f:PIC 9(9)	d:Sales Volume 10	t:1
+p:526-532	f:PIC 9(7)	d:Ticket Average 10	t:1
+p:533-534	f:PIC X(2)	d:Discount Method 10	t:1
+p:535-543	f:PIC 9(4)v9(5)	d:Discount Percentage 10	t:1
+p:544-600	f:PIC X(57)	d:Reserved-spaces	t:0
+-EQP
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:EQP
+p:004-006	f:PIC 9(3)	d:Equipment Code
+p:007-010	f:PIC X(4)	d:Environment
+p:011-016	f:PIC X(6)	d:Card Type 1	t:1
+p:017-022	f:PIC X(6)	d:Card Type 2	t:1
+p:023-028	f:PIC X(6)	d:Card Type 3	t:1
+p:029-034	f:PIC X(6)	d:Card Type 4	t:1
+p:035-040	f:PIC X(6)	d:Card Type 5	t:1
+p:041-046	f:PIC X(6)	d:Card Type 6	t:1
+p:047-052	f:PIC X(6)	d:Card Type 7	t:1
+p:053-058	f:PIC X(6)	d:Card Type 8	t:1
+p:059-064	f:PIC X(6)	d:Card Type 9	t:1
+p:065-070	f:PIC X(6)	d:Card Type 10	t:1
+p:071-071	f:PIC X(1)	d:Auto Close	t:1
+p:072-075	f:PIC 9(4)	d:Auto Close Time	t:1	v:0430
+p:076-087	f:PIC X(12)	d:Customer Specific Terminal Level ID	t:1
+p:088-090	f:PIC 9(3)	d:Peripheral Type 1 Code	t:1
+p:091-093	f:PIC 9(3)	d:Peripheral Type 1 Quantity	t:1
+p:094-096	f:PIC 9(3)	d:Peripheral Type 2 Code	t:1
+p:097-099	f:PIC 9(3)	d:Peripheral Type 2 Quantity	t:1
+p:100-102	f:PIC 9(3)	d:Peripheral Type 3 Code	t:1
+p:103-105	f:PIC 9(3)	d:Peripheral Type 3 Quantity	t:1
+p:106-108	f:PIC 9(3)	d:Peripheral Type 4 Code	t:1
+p:109-111	f:PIC 9(3)	d:Peripheral Type 4 Quantity	t:1
+p:112-114	f:PIC 9(3)	d:Peripheral Type 5 Code	t:1
+p:115-117	f:PIC 9(3)	d:Peripheral Type 5 Quantity	t:1
+p:118-600	f:PIC X(483)	d:Reserved-spaces	t:0
+-CNT
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:CNT
+p:004-006	f:PIC X(3)	d:Contact Level	t:1
+p:007-008	f:PIC X(2)	d:Contact Type	t:1
+p:009-048	f:PIC X(40)	d:Contact Name Full Name	t:1
+p:049-063	f:PIC X(15)	d:Contact First Name	t:1
+p:064-064	f:PIC X(1)	d:Contact Middle Initial	t:1
+p:065-089	f:PIC X(25)	d:Contact Last Name	t:1
+p:090-119	f:PIC X(30)	d:Title	t:1
+p:120-159	f:PIC X(40)	d:Address Line 1	t:1
+p:160-199	f:PIC X(40)	d:Address Line 2	t:1
+p:200-227	f:PIC X(28)	d:City	t:1
+p:228-229	f:PIC X(2)	d:State	t:1
+p:230-234	f:PIC X(5)	d:Zip Code	t:1
+p:235-238	f:PIC X(4)	d:Zip Extend	t:1
+p:239-248	f:PIC X(10)	d:Phone	t:1
+p:249-258	f:PIC X(10)	d:Fax	t:1
+p:259-318	f:PIC X(60)	d:E-Mail	t:1
+p:319-327	f:PIC X(9)	d:SSN	t:1
+p:328-330	f:PIC 9(3)	d:Percent Owned	t:1
+p:331-340	f:PIC X(10)	d:Date of Birth	t:1
+p:341-342	f:PIC X(2)	d:Time Zone	t:1
+p:343-600	f:PIC X(258)	d:Reserved Spaces	t:0
+-TLR
+p:001-003	f:PIC X(3)	d:Record Type	t:0	v:TLR
+p:004-006	f:PIC X(3)	d:File Title	t:0	v:MBF
+p:007-011	f:PIC 9(5)	d:Number of Chains in File
+p:012-017	f:PIC 9(6)	d:Physical Record Count (Including Trailer Record) on MBF
+p:018-600	f:PIC X(583)	d:Reserved-spaces	t:0
